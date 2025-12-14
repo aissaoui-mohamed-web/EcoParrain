@@ -17,15 +17,20 @@ export enum ProductType {
   EV_CHARGER = 'Borne de recharge'
 }
 
+export type UserRole = 'PARTNER' | 'ADMIN';
+
 export interface User {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
   token: string; // Simulated token
 }
 
 export interface Lead {
   id: string;
+  partnerId: string; // ID of the partner who brought the lead
+  partnerName: string; // Name of the partner (for Admin view)
   name: string;
   phone: string;
   email: string;
@@ -33,6 +38,17 @@ export interface Lead {
   status: LeadStatus;
   dateAdded: string;
   estimatedCommission: number;
+}
+
+export interface AppNotification {
+  id: string;
+  userId: string; // The partner to notify
+  leadId: string;
+  title: string;
+  message: string;
+  date: string;
+  isRead: boolean;
+  type: 'STATUS_CHANGE' | 'INFO';
 }
 
 export interface CommissionRate {

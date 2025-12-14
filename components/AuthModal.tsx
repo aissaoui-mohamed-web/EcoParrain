@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
-import { Mail, Lock, User as UserIcon, X, ArrowRight, Loader2, AlertCircle, KeyRound, CheckCircle2, ArrowLeft } from 'lucide-react';
-import { User } from '../types';
+import React, { useState, useEffect } from 'react';
+import { Mail, Lock, User as UserIcon, X, ArrowRight, Loader2, AlertCircle, KeyRound, CheckCircle2, ArrowLeft, Shield } from 'lucide-react';
+import { User, UserRole } from '../types';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -16,12 +16,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [resetSent, setResetSent] = useState(false);
+  const [isAdminLogin, setIsAdminLogin] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: ''
   });
+
+  // Auto-detect admin email to toggle mode automatically
+  useEffect(() => {
+    if (formData.email === 'admin@ecoparrain.com') {
+      setIsAdminLogin(true);
+    }
+  }, [formData.email]);
 
   if (!isOpen) return null;
 
@@ -30,7 +38,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
     setLoading(true);
     setError('');
 
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     if (formData.email) {
@@ -42,36 +49,79 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
     }
   };
 
+  const toggleAdminMode = () => {
+    setIsAdminLogin(!isAdminLogin);
+    setFormData(prev => ({ ...prev, password: '' }));
+  };
+
+  // Helper to generate a stable ID from email
+  const generateIdFromEmail = (email: string) => {
+    // Create a stable ID like "usr_jean_dupont_gmail_com"
+    return 'usr_' + email.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+  };
+
+  // Simulate JWT generation
+  const generateToken = (role: string) => {
+    const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+    const payload = btoa(JSON.stringify({ role, exp: Date.now() + 3600000 }));
+    return `${header}.${payload}.signature_securisee_${Date.now()}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 800));
 
     try {
       if (view === 'LOGIN') {
-        // Simulated Login Check
+        // Check for Admin
+        if (isAdminLogin || formData.email === 'admin@ecoparrain.com') {
+          if (formData.email === 'admin@ecoparrain.com' && formData.password === 'admin123') {
+             const user: User = {
+               id: 'adm_siege_01', 
+               name: 'Siège EcoParrain', 
+               email: formData.email,
+               role: 'ADMIN',
+               token: generateToken('ADMIN')
+             };
+             onLoginSuccess(user);
+             return;
+          } else {
+             if (formData.email === 'admin@ecoparrain.com') {
+                throw new Error("Mot de passe administrateur incorrect.");
+             }
+          }
+        } 
+        
+        // Standard Partner Login
         if (formData.email && formData.password) {
-           const user: User = {
-             id: 'user-' + Date.now(),
-             name: 'Utilisateur Démo', 
-             email: formData.email,
-             token: 'demo-token-' + Date.now()
-           };
-           onLoginSuccess(user);
+             const userId = generateIdFromEmail(formData.email);
+             // If name is not provided in login, use email part
+             const displayName = formData.email.split('@')[0];
+             const formattedName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+
+             const user: User = {
+               id: userId,
+               name: formattedName, 
+               email: formData.email,
+               role: 'PARTNER',
+               token: generateToken('PARTNER')
+             };
+             onLoginSuccess(user);
         } else {
-          throw new Error("Veuillez remplir tous les champs.");
+            throw new Error("Veuillez remplir tous les champs.");
         }
+
       } else if (view === 'REGISTER') {
-        // Registration
         if (formData.name && formData.email && formData.password) {
           const user: User = {
-            id: 'user-' + Date.now(),
+            id: generateIdFromEmail(formData.email),
             name: formData.name,
             email: formData.email,
-            token: 'demo-token-' + Date.now()
+            role: 'PARTNER',
+            token: generateToken('PARTNER')
           };
           onLoginSuccess(user);
         } else {
@@ -88,7 +138,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
   const resetState = () => {
     setError('');
     setResetSent(false);
-    setFormData(prev => ({ ...prev, password: '' })); // Clear password on view switch
+    setFormData(prev => ({ ...prev, password: '' }));
   };
 
   const switchView = (newView: AuthView) => {
@@ -162,7 +212,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-                        placeholder="nom@exemple.com"
+                        placeholder={isAdminLogin ? "Ex: admin@ecoparrain.com" : "nom@exemple.com"}
                         required
                       />
                     </div>
@@ -189,16 +239,34 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
           ) : (
             /* --- LOGIN / REGISTER VIEW --- */
             <div>
-              <div className="text-center mb-8">
+              <div className="text-center mb-6">
                 <h2 className="text-2xl font-bold text-slate-900">
                   {view === 'LOGIN' ? 'Bon retour parmi nous !' : 'Créer votre compte'}
                 </h2>
                 <p className="text-slate-500 mt-2 text-sm">
                   {view === 'LOGIN' 
-                    ? 'Connectez-vous pour accéder à votre espace parrain.' 
+                    ? 'Connectez-vous pour accéder à votre espace.' 
                     : 'Rejoignez le réseau EcoParrain et commencez à gagner.'}
                 </p>
               </div>
+
+              {/* Admin Toggle Switch */}
+              {view === 'LOGIN' && (
+                <div className="mb-6 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={toggleAdminMode}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                      isAdminLogin 
+                        ? 'bg-slate-900 text-white ring-2 ring-slate-900 ring-offset-2' 
+                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                    }`}
+                  >
+                    <Shield size={14} />
+                    {isAdminLogin ? 'Mode Administrateur (Siège)' : 'Mode Parrain (Partenaire)'}
+                  </button>
+                </div>
+              )}
 
               {error && (
                 <div className="mb-6 p-3 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm flex items-center gap-2">
@@ -233,7 +301,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-                      placeholder="nom@exemple.com"
+                      placeholder={isAdminLogin ? "Ex: admin@ecoparrain.com" : "nom@exemple.com"}
                     />
                   </div>
                 </div>
@@ -266,13 +334,17 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSuccess }
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 mt-6 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className={`w-full py-4 font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mt-6 disabled:opacity-70 disabled:cursor-not-allowed ${
+                    isAdminLogin 
+                      ? 'bg-slate-900 hover:bg-slate-800 text-white shadow-slate-900/20' 
+                      : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20'
+                  }`}
                 >
                   {loading ? (
                     <Loader2 className="animate-spin w-5 h-5" />
                   ) : (
                     <>
-                      {view === 'LOGIN' ? 'Se connecter' : "S'inscrire gratuitement"}
+                      {view === 'LOGIN' ? (isAdminLogin ? 'Accéder au Siège' : 'Se connecter') : "S'inscrire gratuitement"}
                       <ArrowRight size={20} />
                     </>
                   )}

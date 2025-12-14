@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sun, 
   Wind, 
@@ -33,9 +33,13 @@ import {
   Wallet,
   Clock,
   Smartphone,
-  Bell
+  Bell,
+  Download,
+  Share,
+  PlusSquare
 } from 'lucide-react';
 import { ProductType, COMMISSION_RATES } from '../types';
+import LegalModal, { LegalSection } from './LegalModal';
 
 interface LandingPageProps {
   onLogin: () => void;
@@ -52,29 +56,32 @@ const NEWS_ARTICLES = [
   {
     id: 1,
     category: "Réglementation",
-    title: "MaPrimeRénov' 2024 : Ce qui change pour les propriétaires",
-    excerpt: "Le gouvernement ajuste les barèmes pour favoriser les rénovations globales. Découvrez les nouveaux montants d'aides disponibles dès ce mois-ci.",
+    title: "MaPrimeRénov' : Tout savoir sur les aides de l'État en 2025",
+    excerpt: "Le gouvernement ajuste les barèmes pour favoriser les rénovations d'ampleur. Découvrez les montants et les nouvelles conditions d'éligibilité.",
     date: getRelativeDate(2),
     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=800",
-    readTime: "4 min"
+    readTime: "4 min",
+    url: "https://france-renov.gouv.fr/aides/maprimerenov"
   },
   {
     id: 2,
     category: "Technologie",
-    title: "Panneaux Solaires : Les nouvelles cellules offrent 30% de rendement en plus",
-    excerpt: "Une avancée technologique majeure permet désormais de produire plus d'électricité sur une surface de toiture réduite. Idéal pour le résidentiel.",
+    title: "Solaire : Des records de rendement à plus de 33% pour les cellules tandem",
+    excerpt: "Une avancée technologique majeure qui promet de révolutionner le marché résidentiel en produisant plus d'électricité sur une surface réduite.",
     date: getRelativeDate(5),
     image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=800",
-    readTime: "3 min"
+    readTime: "3 min",
+    url: "https://www.revolution-energetique.com/ce-panneau-solaire-a-cellules-tandem-bat-un-record-monumental-de-rendement/"
   },
   {
     id: 3,
     category: "Marché",
-    title: "Hausse de l'électricité : L'autoconsommation explose en France",
-    excerpt: "Face à l'inflation énergétique, de plus en plus de foyers se tournent vers l'indépendance énergétique. Analyse d'une tendance durable.",
+    title: "L'autoconsommation explose : +77% de raccordements en un an",
+    excerpt: "Enedis confirme l'engouement historique des Français pour l'indépendance énergétique face à la volatilité des prix de l'électricité.",
     date: getRelativeDate(8),
     image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=800",
-    readTime: "5 min"
+    readTime: "5 min",
+    url: "https://www.enedis.fr/actualites/autoconsommation-le-boom-se-poursuit"
   }
 ];
 
@@ -82,6 +89,60 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [simulatorStep, setSimulatorStep] = useState(3);
   const [selectedProduct, setSelectedProduct] = useState<ProductType>(ProductType.SOLAR);
+
+  // Legal Modal State
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
+  const [legalSection, setLegalSection] = useState<LegalSection>('mentions');
+
+  const openLegal = (section: LegalSection) => {
+    setLegalSection(section);
+    setIsLegalModalOpen(true);
+  };
+
+  // PWA Installation States
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isIos, setIsIos] = useState(false);
+  const [showIosTutorial, setShowIosTutorial] = useState(false);
+  const [isAppInstalled, setIsAppInstalled] = useState(false);
+
+  useEffect(() => {
+    // 1. Detect Install Prompt (Android/Desktop)
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    // 2. Detect iOS
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
+    setIsIos(isIosDevice);
+
+    // 3. Detect if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true) {
+      setIsAppInstalled(true);
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      // Trigger Android/Desktop prompt
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to install prompt: ${outcome}`);
+      setDeferredPrompt(null);
+    } else if (isIos) {
+      // Show iOS instructions
+      setShowIosTutorial(true);
+    } else {
+      // Fallback (e.g., Firefox or already installed but not detected)
+      alert("Pour installer l'application, utilisez l'option 'Ajouter à l'écran d'accueil' ou 'Installer' dans le menu de votre navigateur.");
+    }
+  };
 
   // Calculer la commission moyenne pour le produit sélectionné
   const currentRate = COMMISSION_RATES.find(r => r.product === selectedProduct);
@@ -101,6 +162,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
+      
+      {/* Legal Modal Component */}
+      <LegalModal 
+        isOpen={isLegalModalOpen} 
+        onClose={() => setIsLegalModalOpen(false)} 
+        section={legalSection} 
+      />
+
       {/* Header Container (Banner + Nav) */}
       <header className="fixed w-full z-50 top-0 shadow-sm flex flex-col">
         {/* Blue Banner */}
@@ -180,7 +249,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         <div className="absolute top-0 right-0 w-1/3 h-full bg-emerald-50/50 skew-x-12 translate-x-32 pointer-events-none"></div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           <div className="space-y-8 animate-fade-in-up">
-            {/* Improved Info Banner */}
+            {/* Info Banner */}
             <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full border border-emerald-100 shadow-[0_0_15px_rgba(16,185,129,0.15)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] cursor-default">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -554,38 +623,78 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             {/* Application Mobile */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-emerald-600 to-teal-500 transform rotate-3 rounded-3xl opacity-10"></div>
-              <div className="bg-slate-900 rounded-3xl p-8 md:p-12 relative text-white shadow-xl overflow-hidden">
+              <div className="bg-slate-900 rounded-3xl p-8 md:p-12 relative text-white shadow-xl overflow-hidden min-h-[500px] flex flex-col justify-center">
                 {/* Decoration */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500 rounded-full blur-3xl opacity-20 translate-x-1/2 -translate-y-1/2"></div>
                 
-                <h2 className="text-3xl font-bold mb-8 relative z-10">Application mobile</h2>
-                
-                <ul className="space-y-6 relative z-10">
-                  <li className="flex items-center gap-4">
-                    <div className="p-2 bg-white/10 rounded-lg">
-                      <UserPlus className="w-6 h-6 text-emerald-400" />
-                    </div>
-                    <span className="font-medium text-lg">Enregistrement rapide des prospects</span>
-                  </li>
-                  <li className="flex items-center gap-4">
-                    <div className="p-2 bg-white/10 rounded-lg">
-                      <Bell className="w-6 h-6 text-emerald-400" />
-                    </div>
-                    <span className="font-medium text-lg">Notifications sur l'avancement des dossiers</span>
-                  </li>
-                  <li className="flex items-center gap-4">
-                    <div className="p-2 bg-white/10 rounded-lg">
-                      <Newspaper className="w-6 h-6 text-emerald-400" />
-                    </div>
-                    <span className="font-medium text-lg">Accès aux supports marketing</span>
-                  </li>
-                </ul>
+                <div className="relative z-10">
+                  <h2 className="text-3xl font-bold mb-4">Application Web Mobile</h2>
+                  <p className="text-slate-300 mb-8 text-lg">
+                    Pas besoin de passer par un store. Installez directement notre application sur votre téléphone pour un accès rapide et hors ligne.
+                  </p>
+                  
+                  <ul className="space-y-6 mb-10">
+                    <li className="flex items-center gap-4">
+                      <div className="p-2 bg-white/10 rounded-lg">
+                        <UserPlus className="w-6 h-6 text-emerald-400" />
+                      </div>
+                      <span className="font-medium text-lg">Enregistrement rapide des prospects</span>
+                    </li>
+                    <li className="flex items-center gap-4">
+                      <div className="p-2 bg-white/10 rounded-lg">
+                        <Bell className="w-6 h-6 text-emerald-400" />
+                      </div>
+                      <span className="font-medium text-lg">Notifications sur l'avancement</span>
+                    </li>
+                  </ul>
 
-                <div className="mt-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row gap-4 relative z-10">
-                  <button className="flex-1 bg-white text-slate-900 py-3 rounded-xl font-bold hover:bg-slate-100 transition-colors flex items-center justify-center gap-2">
-                    <Smartphone className="w-5 h-5" />
-                    iOS & Android
-                  </button>
+                  {/* Bouton d'installation PWA */}
+                  {!isAppInstalled ? (
+                    <div>
+                      <button 
+                        onClick={handleInstallClick}
+                        className="w-full bg-emerald-500 text-white py-4 rounded-xl font-bold hover:bg-emerald-400 transition-colors flex items-center justify-center gap-3 shadow-lg group animate-scale-up"
+                      >
+                         <Download className="w-6 h-6 group-hover:translate-y-0.5 transition-transform" />
+                         <div className="text-left">
+                            <div className="text-[10px] uppercase tracking-wider font-semibold opacity-90">Disponible maintenant</div>
+                            <div className="text-lg">Installer l'application</div>
+                         </div>
+                      </button>
+                      
+                      {/* iOS Instructions visible only when needed */}
+                      {showIosTutorial && isIos && (
+                        <div className="mt-6 bg-slate-800/50 p-4 rounded-xl border border-white/10 animate-fade-in-up">
+                           <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-bold text-white text-sm">Sur iPhone (Safari) :</h4>
+                              <button onClick={() => setShowIosTutorial(false)}><X size={16} className="text-slate-400"/></button>
+                           </div>
+                           <div className="space-y-3 text-sm text-slate-300">
+                             <div className="flex items-center gap-2">
+                               <span className="bg-slate-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0">1</span>
+                               <span>Appuyez sur le bouton <strong>Partager</strong> <Share size={14} className="inline text-blue-400"/></span>
+                             </div>
+                             <div className="flex items-center gap-2">
+                               <span className="bg-slate-700 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                               <span>Cherchez et sélectionnez <strong>Sur l'écran d'accueil</strong> <PlusSquare size={14} className="inline text-white"/></span>
+                             </div>
+                           </div>
+                        </div>
+                      )}
+
+                      {/* Fallback text if button clicked but no prompt available (and not iOS) */}
+                      {!deferredPrompt && !isIos && (
+                         <p className="text-xs text-slate-500 mt-3 text-center">
+                            Astuce : Si le bouton ne fonctionne pas, utilisez le menu de votre navigateur pour "Installer" ou "Ajouter à l'écran d'accueil".
+                         </p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="bg-emerald-500/20 border border-emerald-500/50 p-4 rounded-xl flex items-center gap-3">
+                        <CheckCircle className="text-emerald-400 w-6 h-6" />
+                        <span className="font-bold text-white">Application déjà installée !</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -667,7 +776,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {NEWS_ARTICLES.map((article) => (
-              <div key={article.id} className="group cursor-pointer">
+              <a 
+                href={article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                key={article.id} 
+                className="group cursor-pointer block h-full flex flex-col"
+              >
                 <div className="relative overflow-hidden rounded-2xl mb-4 aspect-video">
                   <img 
                     src={article.image} 
@@ -678,7 +793,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                     {article.category}
                   </div>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1 flex flex-col">
                   <div className="flex items-center gap-4 text-xs text-slate-500 font-medium">
                     <span className="flex items-center gap-1"><Calendar size={14}/> {article.date}</span>
                     <span className="flex items-center gap-1"><Clock size={14}/> {article.readTime}</span>
@@ -686,14 +801,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2">
                     {article.title}
                   </h3>
-                  <p className="text-slate-600 text-sm line-clamp-3 leading-relaxed">
+                  <p className="text-slate-600 text-sm line-clamp-3 leading-relaxed mb-4 flex-1">
                     {article.excerpt}
                   </p>
-                  <button className="text-emerald-600 font-bold text-sm flex items-center gap-1 mt-2 group-hover:gap-2 transition-all">
+                  <span className="text-emerald-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
                     Lire l'article <ArrowRight size={16} />
-                  </button>
+                  </span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -738,16 +853,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <div>
               <h4 className="text-white font-bold mb-6">Légal</h4>
               <ul className="space-y-4 text-sm">
-                <li><a href="#" className="hover:text-emerald-500 transition-colors">Mentions légales</a></li>
-                <li><a href="#" className="hover:text-emerald-500 transition-colors">Politique de confidentialité</a></li>
-                <li><a href="#" className="hover:text-emerald-500 transition-colors">CGU Partenaires</a></li>
-                <li><a href="#" className="hover:text-emerald-500 transition-colors">Cookies</a></li>
+                <li><button onClick={() => openLegal('mentions')} className="hover:text-emerald-500 transition-colors text-left">Mentions légales</button></li>
+                <li><button onClick={() => openLegal('confidentialite')} className="hover:text-emerald-500 transition-colors text-left">Politique de confidentialité</button></li>
+                <li><button onClick={() => openLegal('cgu')} className="hover:text-emerald-500 transition-colors text-left">CGU Partenaires</button></li>
+                <li><button onClick={() => openLegal('cookies')} className="hover:text-emerald-500 transition-colors text-left">Cookies</button></li>
               </ul>
             </div>
           </div>
           
           <div className="pt-8 border-t border-slate-800 text-sm text-center md:text-left flex flex-col md:flex-row justify-between items-center">
-            <p>&copy; 2024 EcoParrain National. Tous droits réservés.</p>
+            <p>&copy; 2026 EcoParrain National. Tous droits réservés.</p>
             <p className="mt-4 md:mt-0 flex items-center gap-2">
               Fait avec <span className="text-red-500">❤</span> pour la transition énergétique
             </p>

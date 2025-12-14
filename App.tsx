@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
 import AuthModal from './components/AuthModal';
+import { InstallPwaBanner } from './components/InstallPwaBanner';
 import { User } from './types';
 
 const App: React.FC = () => {
@@ -57,6 +58,8 @@ const App: React.FC = () => {
         onClose={() => setShowAuthModal(false)}
         onLoginSuccess={handleLoginSuccess}
       />
+      
+      <InstallPwaBanner />
     </div>
   );
 };

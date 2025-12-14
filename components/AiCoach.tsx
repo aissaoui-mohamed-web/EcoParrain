@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { ChatMessage } from '../types';
@@ -62,9 +63,9 @@ const AiCoach: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[600px] bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-250px)] md:h-[600px] bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-600 to-sky-600 p-4 text-white flex items-center justify-between">
+      <div className="bg-gradient-to-r from-emerald-600 to-sky-600 p-4 text-white flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
           <div className="p-2 bg-white/20 rounded-full">
             <Sparkles className="w-5 h-5 text-yellow-300" />
@@ -84,16 +85,16 @@ const AiCoach: React.FC = () => {
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl p-4 shadow-sm ${
+              className={`max-w-[85%] md:max-w-[80%] rounded-2xl p-3 md:p-4 shadow-sm ${
                 msg.role === 'user'
                   ? 'bg-emerald-600 text-white rounded-tr-none'
                   : 'bg-white text-slate-700 border border-slate-200 rounded-tl-none'
               }`}
             >
               <div className="flex items-start gap-2">
-                {msg.role === 'model' && <Bot className="w-5 h-5 mt-1 shrink-0 text-emerald-600" />}
+                {msg.role === 'model' && <Bot className="w-5 h-5 mt-1 shrink-0 text-emerald-600 hidden md:block" />}
                 <div className="whitespace-pre-wrap text-sm leading-relaxed">{msg.text}</div>
-                {msg.role === 'user' && <User className="w-5 h-5 mt-1 shrink-0 text-emerald-200" />}
+                {msg.role === 'user' && <User className="w-5 h-5 mt-1 shrink-0 text-emerald-200 hidden md:block" />}
               </div>
               <div className={`text-[10px] mt-2 text-right ${msg.role === 'user' ? 'text-emerald-200' : 'text-slate-400'}`}>
                 {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -113,15 +114,15 @@ const AiCoach: React.FC = () => {
       </div>
 
       {/* Input */}
-      <div className="p-4 bg-white border-t border-slate-200">
+      <div className="p-3 md:p-4 bg-white border-t border-slate-200 shrink-0">
         <div className="flex gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Ex: Aide-moi à répondre à un client qui trouve ça trop cher..."
-            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+            placeholder="Posez votre question..."
+            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all text-sm"
             disabled={loading}
           />
           <button
