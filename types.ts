@@ -1,4 +1,3 @@
-
 export enum LeadStatus {
   NEW = 'Nouveau',
   CONTACTED = 'Contact établi',
@@ -13,8 +12,7 @@ export enum ProductType {
   SOLAR = 'Panneaux solaires',
   HEAT_PUMP = 'Pompe à chaleur',
   ISOLATION = 'Isolation thermique',
-  WATER_HEATER = 'Chauffe-eau solaire',
-  EV_CHARGER = 'Borne de recharge'
+  WATER_HEATER = 'Chauffe-eau solaire'
 }
 
 export type UserRole = 'PARTNER' | 'ADMIN';
@@ -24,17 +22,17 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  token: string; // Simulated token
+  token: string;
 }
 
 export interface Lead {
   id: string;
-  partnerId: string; // ID of the partner who brought the lead
-  partnerName: string; // Name of the partner (for Admin view)
+  partnerId: string;
+  partnerName: string;
   name: string;
   phone: string;
   email: string;
-  product: ProductType;
+  products: ProductType[]; // Changed from single product to array
   status: LeadStatus;
   dateAdded: string;
   estimatedCommission: number;
@@ -42,7 +40,7 @@ export interface Lead {
 
 export interface AppNotification {
   id: string;
-  userId: string; // The partner to notify
+  userId: string;
   leadId: string;
   title: string;
   message: string;
@@ -62,12 +60,4 @@ export const COMMISSION_RATES: CommissionRate[] = [
   { product: ProductType.HEAT_PUMP, min: 300, max: 800 },
   { product: ProductType.ISOLATION, min: 400, max: 600 },
   { product: ProductType.WATER_HEATER, min: 200, max: 350 },
-  { product: ProductType.EV_CHARGER, min: 100, max: 200 },
 ];
-
-export interface ChatMessage {
-  id: string;
-  role: 'user' | 'model';
-  text: string;
-  timestamp: Date;
-}

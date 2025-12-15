@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, FileText, Shield, Cookie, Scale } from 'lucide-react';
 
 export type LegalSection = 'mentions' | 'confidentialite' | 'cgu' | 'cookies';
@@ -19,7 +18,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ isOpen, onClose, section }) => 
         return (
           <div className="space-y-6">
             <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Scale className="text-emerald-600" /> Mentions Légales
+              <Scale className="text-sky-600" /> Mentions Légales
             </h3>
             <div className="space-y-4 text-sm text-slate-600">
               <div>
@@ -55,7 +54,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ isOpen, onClose, section }) => 
         return (
           <div className="space-y-6">
             <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Shield className="text-emerald-600" /> Politique de Confidentialité
+              <Shield className="text-sky-600" /> Politique de Confidentialité
             </h3>
             <div className="space-y-4 text-sm text-slate-600">
               <p className="italic bg-slate-50 p-3 rounded-lg border border-slate-100">
@@ -98,7 +97,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ isOpen, onClose, section }) => 
         return (
           <div className="space-y-6">
             <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <FileText className="text-emerald-600" /> CGU Partenaires
+              <FileText className="text-sky-600" /> CGU Partenaires
             </h3>
             <div className="space-y-4 text-sm text-slate-600">
               <div>
@@ -135,7 +134,7 @@ const LegalModal: React.FC<LegalModalProps> = ({ isOpen, onClose, section }) => 
         return (
           <div className="space-y-6">
             <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Cookie className="text-emerald-600" /> Gestion des Cookies
+              <Cookie className="text-sky-600" /> Gestion des Cookies
             </h3>
             <div className="space-y-4 text-sm text-slate-600">
               <div>

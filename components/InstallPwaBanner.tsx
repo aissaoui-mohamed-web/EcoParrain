@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Share, PlusSquare, X, Download, Smartphone } from 'lucide-react';
 
@@ -71,7 +70,7 @@ export const InstallPwaBanner: React.FC = () => {
         
         <div className="p-5">
           <div className="flex items-start gap-4">
-            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-3 rounded-xl shrink-0 shadow-lg">
+            <div className="bg-gradient-to-br from-sky-500 to-cyan-400 p-3 rounded-xl shrink-0 shadow-lg">
                <Download className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
@@ -85,13 +84,13 @@ export const InstallPwaBanner: React.FC = () => {
               {isIos ? (
                 /* VERSION iOS : Instructions manuelles */
                 <div className="space-y-3 bg-slate-800/50 p-3 rounded-xl border border-slate-700/50">
-                  <div className="flex items-center gap-3 text-sm font-medium text-emerald-100">
+                  <div className="flex items-center gap-3 text-sm font-medium text-sky-100">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-slate-700 text-xs font-bold text-white">1</span>
                     <span>Appuyez sur</span>
-                    <Share size={18} className="text-blue-400" />
+                    <Share size={18} className="text-sky-400" />
                     <span className="text-xs text-slate-400">(Partager)</span>
                   </div>
-                  <div className="flex items-center gap-3 text-sm font-medium text-emerald-100">
+                  <div className="flex items-center gap-3 text-sm font-medium text-sky-100">
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-slate-700 text-xs font-bold text-white">2</span>
                     <span>Sélectionnez</span>
                     <div className="flex items-center gap-1 bg-slate-700 px-2 py-0.5 rounded text-xs text-white">
@@ -104,7 +103,7 @@ export const InstallPwaBanner: React.FC = () => {
                 /* VERSION ANDROID : Bouton d'installation native */
                 <button 
                   onClick={handleAndroidInstall}
-                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-gradient-to-r from-sky-500 to-cyan-400 hover:from-sky-600 hover:to-cyan-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-sky-600/20 flex items-center justify-center gap-2"
                 >
                   <Smartphone className="w-5 h-5" />
                   Installer maintenant

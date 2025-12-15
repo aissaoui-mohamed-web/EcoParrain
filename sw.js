@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'ecoparrain-v1';
+const CACHE_NAME = 'ecoparrain-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -14,6 +14,8 @@ self.addEventListener('install', (event) => {
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
+  // Force l'activation immédiate du nouveau SW
+  self.skipWaiting();
 });
 
 self.addEventListener('fetch', (event) => {
@@ -36,6 +38,6 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
