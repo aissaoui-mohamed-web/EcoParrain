@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Sun, 
   Wind, 
@@ -168,44 +168,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const openLegal = (section: LegalSection) => {
     setLegalSection(section);
     setIsLegalModalOpen(true);
-  };
-
-  // PWA Installation States
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [isIos, setIsIos] = useState(false);
-  const [isAppInstalled, setIsAppInstalled] = useState(false);
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIos(isIosDevice);
-
-    if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true) {
-      setIsAppInstalled(true);
-    }
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log(`User response to install prompt: ${outcome}`);
-      setDeferredPrompt(null);
-    } else if (isIos) {
-      alert("Pour installer sur iOS : Appuyez sur le bouton de partage puis 'Sur l'écran d'accueil'");
-    } else {
-      alert("Pour installer l'application, utilisez l'option 'Ajouter à l'écran d'accueil' ou 'Installer' dans le menu de votre navigateur.");
-    }
   };
 
   const currentRate = COMMISSION_RATES.find(r => r.product === selectedProduct);
@@ -913,14 +875,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                    <div className="flex items-center gap-2 text-sm text-slate-300"><CheckCircle size={14} className="text-emerald-400"/> Enregistrement rapide</div>
                    <div className="flex items-center gap-2 text-sm text-slate-300"><CheckCircle size={14} className="text-emerald-400"/> Notifications suivi</div>
                 </div>
-
-                <button 
-                  onClick={handleInstallClick}
-                  className="w-full py-3 bg-white text-slate-900 rounded-xl font-bold hover:bg-sky-50 transition-colors flex items-center justify-center gap-2"
-                >
+                
+                {/* Note: Logic moved to global InstallPwaBanner for automation, but keeping visual button for desktop/manual trigger */}
+                <div className="w-full py-3 bg-white text-slate-900 rounded-xl font-bold flex items-center justify-center gap-2 cursor-default">
                   <Smartphone size={18} />
-                  Installer l'application
-                </button>
+                  Installation automatique
+                </div>
+                <p className="text-center text-xs text-slate-500 mt-2">Le bandeau d'installation apparaîtra automatiquement.</p>
               </div>
             </div>
 
