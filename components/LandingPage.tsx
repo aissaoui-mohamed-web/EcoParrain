@@ -306,10 +306,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       <section className="pt-40 md:pt-56 pb-20 md:pb-24 px-4 bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-sky-100/50 skew-x-12 translate-x-32 pointer-events-none"></div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-          <div className="space-y-8 animate-fade-in-up text-center lg:text-left">
+          <div className="space-y-8 animate-fade-in-up text-left">
             
             {/* Pill Badge - WHITE BG, BLUE GRADIENT TEXT */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 rounded-full bg-white text-xs md:text-sm font-bold mb-0 mx-auto lg:mx-0 w-fit shadow-md border border-sky-100">
+            <div className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 rounded-full bg-white text-xs md:text-sm font-bold mb-0 mx-0 w-fit shadow-md border border-sky-100">
                <span className="relative flex h-2 w-2 shrink-0 md:h-2.5 md:w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 md:h-2.5 md:w-2.5 bg-sky-500"></span>
@@ -326,11 +326,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               Système de Parrainage National - <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-500">Énergie Renouvelable</span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mx-0">
               Programme de parrainage pour prestations d'énergie renouvelable destinées aux maisons individuelles. <br/>
               <span className="font-bold text-slate-900">Un complément de revenu accessible à tous.</span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-start">
               <button 
                 onClick={onLogin}
                 className="px-8 py-4 bg-gradient-to-r from-sky-500 to-cyan-400 text-white rounded-xl font-bold text-lg hover:from-sky-600 hover:to-cyan-500 transition-all shadow-xl shadow-sky-500/20 flex items-center justify-center gap-2 group"
@@ -347,7 +347,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             </div>
             
             {/* Added features list - ROW ON MOBILE */}
-            <div className="mt-8 flex flex-row flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 text-sm font-medium text-slate-600">
+            <div className="mt-8 flex flex-row flex-wrap justify-start gap-4 sm:gap-6 text-sm font-medium text-slate-600">
                <div className="flex items-center gap-2">
                  <CheckCircle className="text-sky-500 w-5 h-5" /> Inscription gratuite
                </div>
@@ -914,7 +914,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               <ul className="space-y-3 text-sm text-slate-400">
                 <li><a href="#comment-ca-marche" className="hover:text-sky-400 transition-colors">Comment ça marche</a></li>
                 <li><a href="#simulateur" className="hover:text-sky-400 transition-colors">Simulateur</a></li>
-                <li><a href="#engagements" className="hover:text-sky-400 transition-colors">Nos Engagements</a></li>
+                <li><a href="#engagements" className="hover:text-sky-400 transition-colors">Engagements</a></li>
                 <li><a href="#actualites" className="hover:text-sky-400 transition-colors">Actualités</a></li>
               </ul>
             </div>
