@@ -29,7 +29,8 @@ import {
   ArrowUpRight,
   MessageSquare,
   Briefcase,
-  ChevronLeft
+  ChevronLeft,
+  ChevronDown
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -230,8 +231,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
       }
   };
 
-  // Filtrage des leads à afficher (Admin voit tout, Partenaire voit ses leads)
-  // Dans l'onglet 'leads' classique :
   const displayedLeads = user.role === 'ADMIN' 
     ? leads // Admin voit tout le monde
     : leads.filter(l => l.partnerId === user.id); // Partenaire ne voit que lui
@@ -239,39 +238,39 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans text-slate-800">
       
-      {/* Sidebar - Desktop ONLY */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full z-10 transition-all duration-300">
-        <div className="p-6 border-b border-slate-800 flex items-center gap-3">
+      {/* Sidebar - Desktop ONLY - REFINED & CLEANER */}
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full z-10 transition-all duration-300 shadow-xl">
+        <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800">
           <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-cyan-400 rounded-lg flex items-center justify-center font-bold text-white">E</div>
           <span className="font-bold text-lg tracking-tight">EcoParrain<span className="text-sky-400">.</span></span>
         </div>
         
-        <nav className="flex-1 py-6 px-4 space-y-1">
-          <button onClick={() => setActiveTab('dashboard')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'dashboard' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
-            <LayoutDashboard size={20} /> <span className="font-medium">Tableau de bord</span>
+        <nav className="flex-1 py-6 px-3 space-y-1">
+          <button onClick={() => setActiveTab('dashboard')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-medium ${activeTab === 'dashboard' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+            <LayoutDashboard size={18} /> Tableau de bord
           </button>
           
-          <button onClick={() => setActiveTab('leads')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'leads' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
-            <FileText size={20} /> <span className="font-medium">Dossiers</span>
+          <button onClick={() => setActiveTab('leads')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-medium ${activeTab === 'leads' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+            <FileText size={18} /> Dossiers
           </button>
 
           {user.role === 'ADMIN' && (
-            <button onClick={() => setActiveTab('partners')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'partners' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
-                <Briefcase size={20} /> <span className="font-medium">Partenaires</span>
+            <button onClick={() => setActiveTab('partners')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-medium ${activeTab === 'partners' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+                <Briefcase size={18} /> Partenaires
             </button>
           )}
 
-          <button onClick={() => setActiveTab('commissions')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'commissions' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
-            <Wallet size={20} /> <span className="font-medium">Gains</span>
+          <button onClick={() => setActiveTab('commissions')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-medium ${activeTab === 'commissions' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+            <Wallet size={18} /> Gains
           </button>
-          <button onClick={() => setActiveTab('settings')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'settings' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
-            <UserIcon size={20} /> <span className="font-medium">Profil</span>
+          <button onClick={() => setActiveTab('settings')} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-medium ${activeTab === 'settings' ? 'bg-sky-600 text-white shadow-lg shadow-sky-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
+            <UserIcon size={18} /> Profil
           </button>
         </nav>
         
         <div className="p-4 border-t border-slate-800">
-          <button onClick={onLogout} className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 font-medium">
-            <LogOut size={16} /> Déconnexion
+          <button onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors text-sm font-medium">
+            <LogOut size={18} /> Déconnexion
           </button>
         </div>
       </aside>
@@ -279,63 +278,88 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
       {/* Main Content */}
       <main className="flex-1 lg:ml-64 min-h-screen flex flex-col pb-24 lg:pb-0">
         
-        {/* Header Mobile & Desktop */}
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
-           <div className="px-4 sm:px-8 py-4 flex items-center justify-between">
+        {/* Header Desktop - STANDARDIZED & SLIMMER (h-16) */}
+        <header className="bg-white border-b border-slate-200 sticky top-0 z-20 h-16 shadow-sm">
+           <div className="px-4 sm:px-6 h-full flex items-center justify-between">
               
+              {/* Mobile Logo */}
               <div className="flex items-center gap-2 lg:hidden">
                  <div className="w-8 h-8 bg-gradient-to-br from-sky-500 to-cyan-400 rounded-lg flex items-center justify-center font-bold text-white">E</div>
                  <span className="font-bold text-lg text-slate-900 tracking-tight">EcoParrain</span>
               </div>
 
-              <div className="hidden lg:block">
-                 <h1 className="text-xl font-bold text-slate-900">
+              {/* Desktop Title & Search */}
+              <div className="hidden lg:flex items-center flex-1 gap-8">
+                 <h1 className="text-lg font-bold text-slate-900">
                     {activeTab === 'dashboard' && "Vue d'ensemble"}
-                    {activeTab === 'leads' && "Gestion des Dossiers"}
-                    {activeTab === 'partners' && "Gestion des Partenaires"}
-                    {activeTab === 'commissions' && "Mes Gains & Paiements"}
-                    {activeTab === 'settings' && "Mon Profil"}
+                    {activeTab === 'leads' && "Dossiers"}
+                    {activeTab === 'partners' && "Partenaires"}
+                    {activeTab === 'commissions' && "Gains"}
+                    {activeTab === 'settings' && "Profil"}
                  </h1>
+                 
+                 <div className="relative max-w-md w-full">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+                    <input 
+                      type="text" 
+                      placeholder="Rechercher un dossier, un client..." 
+                      className="pl-9 pr-4 py-1.5 w-full bg-slate-100 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:bg-white outline-none transition-all" 
+                    />
+                 </div>
               </div>
 
+              {/* Right Side Actions - STANDARD DASHBOARD LAYOUT */}
               <div className="flex items-center gap-3 md:gap-4">
                  {user.role === 'ADMIN' && (
-                    <div className="hidden md:flex items-center px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold border border-amber-200">
-                        MODE ADMIN
+                    <div className="hidden md:flex items-center px-2 py-0.5 bg-amber-50 text-amber-700 rounded-md text-[10px] font-bold border border-amber-200 uppercase tracking-wide">
+                        Admin
                     </div>
                  )}
+                 
                  <button 
                     onClick={() => setShowNotifications(!showNotifications)}
                     className="relative p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
                  >
-                    <Bell size={24} />
-                    <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    <Bell size={20} />
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                  </button>
+
+                 {/* User Profile Dropdown (Desktop) */}
+                 <div className="hidden lg:flex items-center gap-3 pl-3 border-l border-slate-200 cursor-pointer hover:bg-slate-50 p-1 rounded-lg transition-colors" onClick={() => setActiveTab('settings')}>
+                    <div className="text-right hidden xl:block">
+                        <p className="text-sm font-bold text-slate-900 leading-none">{user.name}</p>
+                        <p className="text-xs text-slate-500 mt-1 capitalize">{user.role.toLowerCase()}</p>
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-400 to-emerald-400 flex items-center justify-center text-xs font-bold text-white shadow-sm ring-2 ring-white">
+                        {user.name.charAt(0)}
+                    </div>
+                    <ChevronDown size={14} className="text-slate-400" />
+                 </div>
               </div>
            </div>
 
             {/* Notification Dropdown */}
             {showNotifications && (
-                <div className="absolute top-full right-0 w-full md:w-80 bg-white shadow-2xl border-t border-slate-100 animate-fade-in z-50 rounded-b-2xl overflow-hidden">
+                <div className="absolute top-full right-0 lg:right-4 w-full md:w-80 bg-white shadow-2xl border border-slate-100 animate-fade-in z-50 rounded-b-2xl md:rounded-2xl overflow-hidden mt-1">
                     <div className="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-                        <h3 className="font-bold text-slate-800">Notifications</h3>
-                        <button onClick={() => setShowNotifications(false)}><X size={18} className="text-slate-400"/></button>
+                        <h3 className="font-bold text-slate-800 text-sm">Notifications</h3>
+                        <button onClick={() => setShowNotifications(false)}><X size={16} className="text-slate-400"/></button>
                     </div>
                     <div className="max-h-[60vh] overflow-y-auto">
                         {MOCK_NOTIFICATIONS.map(n => (
-                            <div key={n.id} className="p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                            <div key={n.id} className="p-3 border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer">
                                 <div className="flex gap-3">
-                                    <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${n.type === 'success' ? 'bg-emerald-500' : n.type === 'info' ? 'bg-sky-500' : 'bg-amber-500'}`}></div>
+                                    <div className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${n.type === 'success' ? 'bg-emerald-500' : n.type === 'info' ? 'bg-sky-500' : 'bg-amber-500'}`}></div>
                                     <div>
-                                        <p className="font-bold text-sm text-slate-900">{n.title}</p>
-                                        <p className="text-sm text-slate-600 leading-snug">{n.message}</p>
-                                        <p className="text-xs text-slate-400 mt-1">{n.time}</p>
+                                        <p className="font-bold text-xs text-slate-900">{n.title}</p>
+                                        <p className="text-xs text-slate-600 leading-snug">{n.message}</p>
+                                        <p className="text-[10px] text-slate-400 mt-1">{n.time}</p>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <div className="p-3 text-center bg-slate-50 text-xs font-bold text-sky-600 cursor-pointer">
+                    <div className="p-2 text-center bg-slate-50 text-xs font-bold text-sky-600 cursor-pointer hover:bg-slate-100 transition-colors">
                         Marquer tout comme lu
                     </div>
                 </div>
@@ -343,73 +367,74 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
         </header>
 
         {/* Content Body */}
-        <div className="p-4 sm:p-8 space-y-6 max-w-7xl mx-auto w-full">
+        <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-[1600px] mx-auto w-full">
             
             {/* VUE: DASHBOARD */}
             {activeTab === 'dashboard' && (
               <>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-                   <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                   <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
                          <div className="p-2 bg-sky-50 rounded-lg text-sky-600"><FileText size={20} /></div>
-                         <span className="text-xs text-emerald-500 font-bold bg-emerald-50 px-2 py-1 rounded-full">+1</span>
+                         <span className="text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">+1</span>
                       </div>
-                      <p className="text-slate-500 text-xs font-medium uppercase">Dossiers</p>
+                      <p className="text-slate-500 text-xs font-medium uppercase tracking-wide">Dossiers</p>
                       <p className="text-2xl font-bold text-slate-900">{displayedLeads.length}</p>
                    </div>
 
-                   <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                   <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
                          <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600"><CheckCircle size={20} /></div>
                       </div>
-                      <p className="text-slate-500 text-xs font-medium uppercase">Signés</p>
+                      <p className="text-slate-500 text-xs font-medium uppercase tracking-wide">Signés</p>
                       <p className="text-2xl font-bold text-slate-900">
                          {displayedLeads.filter(l => l.status === LeadStatus.SIGNED || l.status === LeadStatus.INSTALLED).length}
                       </p>
                    </div>
 
-                   <div className="col-span-2 bg-gradient-to-br from-sky-500 to-cyan-400 p-5 rounded-2xl shadow-lg text-white">
-                      <p className="text-sky-100 text-sm font-medium mb-1">Total Commissions (Est.)</p>
-                      <p className="text-3xl font-bold mb-4">
+                   <div className="col-span-2 bg-gradient-to-r from-sky-600 to-cyan-500 p-6 rounded-xl shadow-lg text-white relative overflow-hidden group">
+                      <div className="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-10 -translate-y-10 group-hover:bg-white/20 transition-all"></div>
+                      <p className="text-sky-100 text-sm font-medium mb-1 relative z-10">Total Commissions (Est.)</p>
+                      <p className="text-3xl font-bold mb-4 relative z-10">
                         {displayedLeads.reduce((acc, l) => acc + l.estimatedCommission, 0).toLocaleString()} €
                       </p>
                       <button 
                         onClick={() => setActiveTab('commissions')}
-                        className="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-sm font-bold transition-colors flex items-center justify-center gap-2"
+                        className="relative z-10 py-2 px-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-sm font-bold transition-colors flex items-center gap-2"
                       >
                          <Clock size={16} /> Voir l'historique
                       </button>
                    </div>
                 </div>
 
-                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                   <div className="p-4 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
-                      <h3 className="font-bold text-lg text-slate-900">Derniers Dossiers</h3>
-                      <button onClick={() => setActiveTab('leads')} className="text-sky-600 text-sm font-bold flex items-center gap-1">
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                   <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
+                      <h3 className="font-bold text-base text-slate-900">Derniers Dossiers</h3>
+                      <button onClick={() => setActiveTab('leads')} className="text-sky-600 text-sm font-medium hover:text-sky-700 flex items-center gap-1">
                          Tout voir <ChevronRight size={16} />
                       </button>
                    </div>
                    
                    <div className="divide-y divide-slate-50">
                       {displayedLeads.slice(0, 3).map((lead) => (
-                        <div key={lead.id} onClick={() => setSelectedLead(lead)} className="p-4 active:bg-slate-50 transition-colors cursor-pointer">
-                           <div className="flex justify-between items-start mb-2">
+                        <div key={lead.id} onClick={() => setSelectedLead(lead)} className="px-6 py-4 hover:bg-slate-50 transition-colors cursor-pointer flex items-center justify-between">
+                           <div className="flex items-center gap-4">
+                              <div className={`w-2 h-2 rounded-full ${lead.status === LeadStatus.SIGNED ? 'bg-emerald-500' : 'bg-sky-500'}`}></div>
                               <div>
-                                 <p className="font-bold text-slate-900">{lead.name}</p>
+                                 <p className="font-bold text-slate-900 text-sm">{lead.name}</p>
                                  <div className="flex gap-2 text-xs text-slate-500">
                                     <span>{lead.products.join(' + ')}</span>
                                     {user.role === 'ADMIN' && <span className="text-sky-600">• {lead.partnerName}</span>}
                                  </div>
                               </div>
-                              <span className="font-bold text-sky-600 text-sm">{lead.estimatedCommission}€</span>
                            </div>
-                           <div className="flex justify-between items-center mt-3">
-                              <span className={`inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide border ${getStatusColor(lead.status)}`}>
+                           
+                           <div className="flex items-center gap-6">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide border ${getStatusColor(lead.status)}`}>
                                 {lead.status}
                               </span>
-                              <div className="flex items-center gap-1 text-xs text-slate-400">
-                                 <Calendar size={12}/> {new Date(lead.dateAdded).toLocaleDateString('fr-FR')}
-                              </div>
+                              <span className="font-bold text-sky-600 text-sm w-16 text-right">{lead.estimatedCommission}€</span>
+                              <ChevronRight size={16} className="text-slate-300" />
                            </div>
                         </div>
                       ))}
@@ -423,15 +448,15 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                <div className="space-y-4 pb-20">
                   <div className="flex justify-between items-center mb-2">
                      <h2 className="text-lg font-bold">Tous mes dossiers ({displayedLeads.length})</h2>
-                     <button onClick={() => setIsAddModalOpen(true)} className="bg-sky-50 text-sky-600 px-3 py-1.5 rounded-lg font-bold text-sm flex items-center gap-1">
-                        <Plus size={16}/> Nouveau
+                     <button onClick={() => setIsAddModalOpen(true)} className="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 shadow-sm transition-all">
+                        <Plus size={16}/> Nouveau Dossier
                      </button>
                   </div>
                   
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                      {displayedLeads.map((lead) => (
-                        <div key={lead.id} onClick={() => setSelectedLead(lead)} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden active:scale-[0.98] transition-transform cursor-pointer">
-                           <div className={`absolute top-0 left-0 w-1 h-full ${lead.status === LeadStatus.SIGNED ? 'bg-emerald-500' : 'bg-sky-500'}`}></div>
+                        <div key={lead.id} onClick={() => setSelectedLead(lead)} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden hover:shadow-md transition-all cursor-pointer group">
+                           <div className={`absolute top-0 left-0 w-1 h-full transition-all group-hover:w-1.5 ${lead.status === LeadStatus.SIGNED ? 'bg-emerald-500' : 'bg-sky-500'}`}></div>
                            <div className="flex justify-between items-start mb-3 pl-2">
                               <div>
                                  <h3 className="font-bold text-slate-900 text-lg">{lead.name}</h3>
@@ -448,7 +473,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                               <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase border ${getStatusColor(lead.status)}`}>
                                  {lead.status}
                               </span>
-                              <ChevronRight size={18} className="text-slate-300" />
+                              <ChevronRight size={18} className="text-slate-300 group-hover:text-slate-500 transition-colors" />
                            </div>
                         </div>
                      ))}
@@ -468,7 +493,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                                    <div 
                                      key={partner.id} 
                                      onClick={() => setSelectedPartnerId(partner.id)}
-                                     className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm cursor-pointer active:scale-[0.98] transition-transform flex justify-between items-center"
+                                     className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:shadow-md transition-all flex justify-between items-center"
                                    >
                                        <div className="flex items-center gap-4">
                                            <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center font-bold text-slate-600">
@@ -497,10 +522,13 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                                <ChevronLeft size={20} /> Retour liste
                            </button>
                            
-                           <div className="bg-sky-50 p-4 rounded-xl border border-sky-100 mb-6">
+                           <div className="bg-sky-50 p-4 rounded-xl border border-sky-100 mb-6 flex justify-between items-center">
                                <h2 className="text-lg font-bold text-sky-900">
                                    Clients de {MOCK_PARTNERS.find(p => p.id === selectedPartnerId)?.name}
                                </h2>
+                               <span className="text-sky-700 font-bold bg-white/50 px-3 py-1 rounded-lg">
+                                   {leads.filter(l => l.partnerId === selectedPartnerId).length} Dossiers
+                               </span>
                            </div>
 
                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -508,7 +536,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                                    <p className="text-slate-500 italic">Aucun dossier pour ce partenaire.</p>
                                ) : (
                                    leads.filter(l => l.partnerId === selectedPartnerId).map((lead) => (
-                                    <div key={lead.id} onClick={() => setSelectedLead(lead)} className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden active:scale-[0.98] transition-transform cursor-pointer">
+                                    <div key={lead.id} onClick={() => setSelectedLead(lead)} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden hover:shadow-md transition-all cursor-pointer">
                                        <div className={`absolute top-0 left-0 w-1 h-full ${lead.status === LeadStatus.SIGNED ? 'bg-emerald-500' : 'bg-sky-500'}`}></div>
                                        <div className="flex justify-between items-start mb-3 pl-2">
                                           <div>
@@ -537,7 +565,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
             {/* VUE: GAINS (Rempli) */}
             {activeTab === 'commissions' && (
                <div className="space-y-6 pb-20">
-                   <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-6 rounded-2xl text-white shadow-xl">
+                   <div className="bg-slate-900 p-6 rounded-xl text-white shadow-lg">
                       <p className="text-slate-400 text-sm font-medium uppercase tracking-wider mb-1">Total Gagné (2025)</p>
                       <h2 className="text-4xl font-bold mb-6">12 450,00 €</h2>
                       <div className="h-40 w-full">
@@ -555,14 +583,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                       </div>
                    </div>
 
-                   <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+                   <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
                        <h3 className="font-bold text-slate-900 mb-4">Répartition des ventes</h3>
                        <div className="h-64 w-full">
                          <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={productData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <XAxis type="number" hide />
                                 <YAxis dataKey="name" type="category" width={90} tick={{fontSize: 11, fill: '#64748b'}} />
-                                <Tooltip cursor={{fill: 'transparent'}} contentStyle={{borderRadius: '8px'}} />
+                                <Tooltip cursor={{fill: 'transparent'}} contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}} />
                                 <Bar dataKey="value" fill="#0ea5e9" radius={[0, 4, 4, 0]} barSize={24}>
                                     <LabelList dataKey="value" position="right" fill="#0f172a" fontSize={12} fontWeight="bold" />
                                 </Bar>
@@ -571,7 +599,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                        </div>
                    </div>
 
-                   <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                   <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                        <div className="p-4 bg-slate-50 border-b border-slate-100">
                            <h3 className="font-bold text-slate-900">Derniers Paiements</h3>
                        </div>
@@ -591,7 +619,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
             {/* VUE: PROFIL (Settings) */}
             {activeTab === 'settings' && (
                <div className="space-y-6 pb-20">
-                  <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                  <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-sky-400 to-cyan-300 flex items-center justify-center text-2xl font-bold text-white shadow-md">
                         {user.name.charAt(0)}
                      </div>
@@ -603,32 +631,34 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
                      </div>
                   </div>
 
-                  <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-                      <button className="w-full p-4 flex items-center justify-between border-b border-slate-50 active:bg-slate-50">
+                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                      <button className="w-full p-4 flex items-center justify-between border-b border-slate-50 hover:bg-slate-50 transition-colors">
                           <span className="font-medium text-slate-700">Modifier mes informations</span>
                           <ChevronRight size={18} className="text-slate-300"/>
                       </button>
-                      <button className="w-full p-4 flex items-center justify-between border-b border-slate-50 active:bg-slate-50">
+                      <button className="w-full p-4 flex items-center justify-between border-b border-slate-50 hover:bg-slate-50 transition-colors">
                           <span className="font-medium text-slate-700">RIB & Paiement</span>
                           <ChevronRight size={18} className="text-slate-300"/>
                       </button>
-                      <button className="w-full p-4 flex items-center justify-between border-b border-slate-50 active:bg-slate-50">
+                      <button className="w-full p-4 flex items-center justify-between border-b border-slate-50 hover:bg-slate-50 transition-colors">
                           <span className="font-medium text-slate-700">Contrat Partenaire</span>
                           <ChevronRight size={18} className="text-slate-300"/>
                       </button>
-                      <button className="w-full p-4 flex items-center justify-between active:bg-slate-50">
+                      <button className="w-full p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
                           <span className="font-medium text-slate-700">Support & Aide</span>
                           <ChevronRight size={18} className="text-slate-300"/>
                       </button>
                   </div>
 
-                  <button 
-                     onClick={onLogout}
-                     className="w-full py-4 bg-red-50 text-red-600 font-bold rounded-2xl border border-red-100 flex items-center justify-center gap-2 active:bg-red-100 transition-colors"
-                  >
-                     <LogOut size={20} />
-                     Déconnexion
-                  </button>
+                  <div className="lg:hidden">
+                    <button 
+                        onClick={onLogout}
+                        className="w-full py-4 bg-red-50 text-red-600 font-bold rounded-xl border border-red-100 flex items-center justify-center gap-2 active:bg-red-100 transition-colors"
+                    >
+                        <LogOut size={20} />
+                        Déconnexion
+                    </button>
+                  </div>
                   
                   <p className="text-center text-xs text-slate-400 mt-4">Version 2.2.0 (Build 50)</p>
                </div>
