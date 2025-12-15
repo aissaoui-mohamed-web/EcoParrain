@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
 import AuthModal from './components/AuthModal';
-import { InstallPwaBanner } from './components/InstallPwaBanner';
 import { User } from './types';
 
 const App: React.FC = () => {
@@ -34,8 +33,6 @@ const App: React.FC = () => {
   const handleLogout = async () => {
     setUser(null);
     localStorage.removeItem('ecoparrain_user');
-    // On nettoie éventuellement les données de démo si on veut repartir à zéro
-    // localStorage.removeItem('ecoparrain_leads'); 
   };
 
   if (loadingInitial) {
@@ -61,8 +58,6 @@ const App: React.FC = () => {
         onClose={() => setShowAuthModal(false)}
         onLoginSuccess={handleLoginSuccess}
       />
-      
-      <InstallPwaBanner />
     </div>
   );
 };

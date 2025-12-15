@@ -13,7 +13,14 @@ interface ErrorBoundaryState {
 
 // Composant de gestion d'erreur global (Empêche l'écran blanc total)
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  state: ErrorBoundaryState = {
+  readonly props: Readonly<ErrorBoundaryProps>;
+
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.props = props;
+  }
+
+  public state: ErrorBoundaryState = {
     hasError: false,
     error: null
   };
