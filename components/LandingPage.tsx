@@ -229,10 +229,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
       {/* Header Container */}
       <header className="fixed w-full z-50 top-0 shadow-sm flex flex-col">
-        {/* Banner - COMPACT SIZE, ROW LAYOUT */}
+        {/* Banner - THEME ORIGINAL: Bleu Ciel / Cyan */}
         <div className="bg-gradient-to-r from-sky-500 to-cyan-400 text-white py-3 md:py-5 px-4 text-center text-sm md:text-lg font-medium relative z-50">
           <div className="max-w-7xl mx-auto flex justify-center items-center gap-2 sm:gap-3">
-            <span className="bg-white/20 px-2 py-0.5 rounded text-[10px] md:text-xs uppercase tracking-wider font-bold border border-white/30 shrink-0">Nouveau</span>
+            <span className="bg-white/20 px-2 py-0.5 rounded text-[10px] md:text-xs uppercase tracking-wider font-bold border border-white/30 shrink-0 text-white">Nouveau</span>
             <p className="leading-snug">
                <span className="hidden sm:inline">Boostez votre activité : </span><span className="font-bold">Prime de 500€ offerte</span> pour vos 3 premiers dossiers ! 🚀
             </p>
@@ -245,7 +245,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <div className="flex justify-between h-20 md:h-24 items-center">
               <div className="flex items-center gap-2">
                 <div className="bg-gradient-to-br from-sky-500 to-cyan-400 p-1.5 md:p-2 rounded-lg">
-                  <Leaf className="text-white w-6 h-6 md:w-8 md:h-8" />
+                  <Leaf className="text-white w-6 h-6 md:w-8 h-8" />
                 </div>
                 <span className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">EcoParrain<span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-cyan-400">.</span></span>
               </div>
@@ -308,7 +308,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           <div className="space-y-8 animate-fade-in-up text-left">
             
-            {/* Pill Badge - WHITE BG, BLUE GRADIENT TEXT */}
+            {/* Pill Badge - UPDATED TO BLUE */}
             <div className="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 rounded-full bg-white text-xs md:text-sm font-bold mb-0 mx-0 w-fit shadow-md border border-sky-100">
                <span className="relative flex h-2 w-2 shrink-0 md:h-2.5 md:w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
@@ -375,7 +375,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       </section>
 
-      {/* How It Works Section - UPDATED TEXT */}
+      {/* How It Works Section - UPDATED ACCORDING TO USER INSTRUCTIONS */}
       <section id="comment-ca-marche" className="py-24 bg-gradient-to-r from-sky-900 to-slate-900 text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl translate-y-1/2 translate-x-1/2"></div>
@@ -400,7 +400,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
-                    <span>Recevoir votre kit de parrain (carte pro, codes)</span>
+                    <span>Recevoir votre kit de parrain</span>
                   </li>
                    <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
@@ -414,11 +414,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                 <div className="w-14 h-14 bg-white/20 text-sky-300 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
                   <Users className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Étape 2 : Prospection</h3>
+                <h3 className="text-xl font-bold text-white mb-4">Étape 2 : Parrainage</h3>
                 <ul className="space-y-3 text-sm text-sky-100/90">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
-                    <span>Identifier des prospects (amis, voisins...)</span>
+                    <span>Identifier les contacts (amis, voisins...)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
@@ -440,7 +440,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                 <ul className="space-y-3 text-sm text-sky-100/90">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
-                    <span>Enregistrer le prospect dans votre espace</span>
+                    <span>Enregistrer le contact dans votre espace</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
@@ -466,7 +466,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
-                    <span>Paiement sous 30 jours après travaux</span>
+                    <span>Paiement sous 7 jours après travaux</span>
                   </li>
                    <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
@@ -478,7 +478,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       </section>
 
-      {/* Simulator Section - UPDATED TEXT */}
+      {/* Simulator Section - UPDATED TO BLUE ACCENTS */}
       <section id="simulateur" className="py-24 bg-slate-50">
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -758,7 +758,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       </section>
 
-      {/* Actualités Section - RESTORED */}
+      {/* Actualités Section - UPDATED ACCENTS */}
       <section id="actualites" className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
@@ -814,7 +814,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       </section>
 
-      {/* Plateforme Digitale Section - UPDATED (Install Box Right on PC) */}
+      {/* Plateforme Digitale Section - UPDATED TO BLUE */}
       <section className="py-24 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
