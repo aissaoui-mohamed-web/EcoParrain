@@ -365,8 +365,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
              <div className="absolute inset-0 bg-gradient-to-tr from-sky-400/20 to-cyan-400/20 rounded-full blur-3xl -z-10"></div>
              <div className="relative w-full max-w-lg z-10 perspective-1000 mx-auto">
                 <div className="absolute -inset-1 bg-gradient-to-r from-sky-500 to-cyan-400 rounded-3xl blur opacity-20 transition duration-1000 group-hover:opacity-100"></div>
+                {/* Updated Hero Image based on user request */}
                 <img 
-                  src="https://i.postimg.cc/6q46KRVw/475789722-928530336146274-5051645785415902609-n.jpg" 
+                  src="https://i.postimg.cc/Hx459PdF/Isolation-exte-rieure-fibre-de-bois-4.jpg" 
                   alt="Maison moderne équipée"
                   className="relative rounded-3xl shadow-2xl object-cover w-full h-auto border-4 border-white transform transition-transform hover:scale-[1.02] duration-500"
                 />
