@@ -426,7 +426,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   </li>
                    <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-sky-400 mt-0.5 shrink-0" />
-                    <span>Collecter les coordonnées des intéressés</span>
+                    <span>Collecter les coordonnées des contacts intéressés</span>
                   </li>
                 </ul>
             </div>
@@ -494,6 +494,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <div className="grid grid-cols-2 gap-3">
                     {COMMISSION_RATES.map((rate) => (
                       <button
+                        type="button"
                         key={rate.product}
                         onClick={() => setSelectedProduct(rate.product)}
                         className={`p-4 rounded-xl text-left border transition-all duration-200 flex flex-col md:flex-row items-center md:items-start gap-3 text-center md:text-left ${
@@ -560,6 +561,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   </div>
 
                   <button 
+                    type="button"
                     onClick={onLogin}
                     className="w-full mt-8 py-3 bg-white text-slate-900 rounded-xl font-bold hover:bg-sky-50 transition-colors"
                   >
@@ -689,7 +691,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           </div>
           
           <div className="text-center mt-12">
-             <button className="inline-flex items-center gap-2 px-8 py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-700 hover:bg-slate-50 hover:border-sky-200 hover:text-sky-600 transition-all shadow-sm">
+             <button type="button" className="inline-flex items-center gap-2 px-8 py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-700 hover:bg-slate-50 hover:border-sky-200 hover:text-sky-600 transition-all shadow-sm">
                 <Camera size={20} />
                 Voir sur Instagram
              </button>
@@ -766,7 +768,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                <h2 className="text-3xl font-bold text-slate-900 mb-2">Actualités & Ressources</h2>
                <p className="text-lg text-slate-600">Restez informé des dernières évolutions du marché.</p>
              </div>
-             <button className="text-sky-600 font-bold hover:text-sky-700 flex items-center gap-1 group">
+             <button type="button" className="text-sky-600 font-bold hover:text-sky-700 flex items-center gap-1 group">
                Voir tous les articles <ArrowRight className="group-hover:translate-x-1 transition-transform" />
              </button>
           </div>
@@ -922,10 +924,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <div className="col-span-1 pl-8 md:pl-0">
               <h4 className="font-bold text-white mb-6 text-lg">Légal</h4>
               <ul className="space-y-3 text-sm text-slate-400">
-                 <li><button onClick={() => openLegal('mentions')} className="hover:text-sky-400 transition-colors text-left">Mentions Légales</button></li>
-                 <li><button onClick={() => openLegal('cgu')} className="hover:text-sky-400 transition-colors text-left">CGU Partenaires</button></li>
-                 <li><button onClick={() => openLegal('confidentialite')} className="hover:text-sky-400 transition-colors text-left">Confidentialité</button></li>
-                 <li><button onClick={() => openLegal('cookies')} className="hover:text-sky-400 transition-colors text-left">Cookies</button></li>
+                 <li><button type="button" onClick={() => openLegal('mentions')} className="hover:text-sky-400 transition-colors text-left">Mentions Légales</button></li>
+                 <li><button type="button" onClick={() => openLegal('cgu')} className="hover:text-sky-400 transition-colors text-left">CGU Partenaires</button></li>
+                 <li><button type="button" onClick={() => openLegal('confidentialite')} className="hover:text-sky-400 transition-colors text-left">Confidentialité</button></li>
+                 <li><button type="button" onClick={() => openLegal('cookies')} className="hover:text-sky-400 transition-colors text-left">Cookies</button></li>
               </ul>
             </div>
 
